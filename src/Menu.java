@@ -443,48 +443,53 @@ System.out.println();
     } //end of viewMemberStatus
 
 
-    public void viewBookStatus(){
+    public void viewBookStatus() {
         // this method is used to view the status of a book
 
         Scanner scanInput = new Scanner(System.in);
-        boolean error= true;
+        boolean bookExist = false;
+        boolean error = true;
         while (error) {
-            try{
-            System.out.println("Please Enter a valid Book Id");
-            int bookId = scanInput.nextInt();
-            if (bookId > 0) {
-                if (books.size() > 0) {
-                    for (Book book : books) {
-                        if (bookId == book.getBookId()) {
-                            System.out.println("Book [" + book.getBookId() + "] : " + book.getTitle());
-                            System.out.println("Available Number Of Copies: " + book.getNumberOfCopies());
-                            ArrayList<Member> members = book.getMembers();
-                            error= false;
-                            if (members.size() > 0) {
-                                System.out.println("List of Members borrowing: ");
-                                members.forEach(member -> System.out.print(member.getName() + ","));
-                                System.out.println();
+            try {
+                System.out.println("Please Enter a valid Book Id");
+                int bookId = scanInput.nextInt();
+                if (bookId > 0) {
+                    if (books.size() > 0) {
+                        for (Book book : books) {
+                            if (bookId == book.getBookId()) {
+                                bookExist = true;
+                                System.out.println("Book [" + book.getBookId() + "] : " + book.getTitle());
+                                System.out.println("Available Number Of Copies: " + book.getNumberOfCopies());
+                                ArrayList<Member> members = book.getMembers();
+                                error = false;
+                                if (members.size() > 0) {
+                                    System.out.println("List of Members borrowing: ");
+                                    members.forEach(member -> System.out.print(member.getName() + ","));
+                                    System.out.println();
+                                    break;
 
+                                } else {
+                                    System.out.println("List of Members borrowing: None");
+                                    break;
+
+                                }
                             } else {
-                                System.out.println("List of Members borrowing: None");
 
+                                error = false;
+                                bookExist = false;
                             }
                         }
-                        else {
-                            System.out.println("Book with Id [" +bookId+"], does not exist in the library");
-                            error=false;
+                        if (!bookExist) {
+                            System.out.println("Book with Id [" + bookId + "], does not exist in the library");
                         }
+                    } else {
+                        System.out.println("No books in the library yet! Add books first before checking status");
+                        error = false;
                     }
                 } else {
-                    System.out.println("No books in the library yet! Add books first before checking status");
-                    error=false;
+                    System.out.println("A valid book Id must be a positive integer");
                 }
-            }
-            else {
-                System.out.println("A valid book Id must be a positive integer");
-            }
-            }
-            catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("A valid book Id must be a positive integer");
                 scanInput.next();
             }
@@ -492,7 +497,7 @@ System.out.println();
         }//end of while (!error)
 
 
-        boolean invalidSelection=true;
+        boolean invalidSelection = true;
         while (invalidSelection) {
             System.out.println("Would you like to view a new book [s]tatus or go-[b]ack to the previous menu?");
             String choice = scanInput.next();
@@ -500,21 +505,20 @@ System.out.println();
                 case "s":
                     // recursive call to the same method to view book status
                     viewBookStatus();
-                    invalidSelection=false;
+                    invalidSelection = false;
                     break;
 
                 case "b":
-                    invalidSelection=false;
+                    invalidSelection = false;
                     break;
 
                 default:
                     System.out.println("Invalid selection please enter [s] to view book status or [b] to go back to menu");
                     System.out.println();
-                    invalidSelection=true;
+                    invalidSelection = true;
             }
         }
     }//end of viewBookStatus
-
     public void processReturn(){
         Scanner scanInput = new Scanner(System.in);
         boolean error=true;
